@@ -539,6 +539,7 @@ class SalesforceBulk(object):
         records = []
         line_number = 0
         col_names = []
+        csv.field_size_limit(sys.maxsize)
         reader = csv.reader(tf, delimiter=",", quotechar='"')
         for row in reader:
             line_number += 1
@@ -559,6 +560,7 @@ class SalesforceBulk(object):
         records = []
         line_number = 0
         col_names = []
+        csv.field_size_limit(sys.maxsize)
         reader = csv.reader(tf, delimiter=",", quotechar='"')
         for row in reader:
             line_number += 1

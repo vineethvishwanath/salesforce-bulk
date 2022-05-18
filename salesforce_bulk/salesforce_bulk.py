@@ -14,7 +14,8 @@ import StringIO
 import re
 import time
 import csv
-
+import sys
+csv.field_size_limit(sys.maxsize)
 from . import bulk_states
 
 UploadResult = namedtuple('UploadResult', 'id success created error')

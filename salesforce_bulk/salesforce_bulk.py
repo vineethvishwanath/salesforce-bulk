@@ -15,7 +15,6 @@ import re
 import time
 import csv
 import sys
-csv.field_size_limit(sys.maxsize)
 from . import bulk_states
 
 UploadResult = namedtuple('UploadResult', 'id success created error')
@@ -470,6 +469,8 @@ class SalesforceBulk(object):
         if not parse_csv:
             iterator = resp.iter_lines()
         else:
+            print("---------------Testing---------------------")
+            csv.field_size_limit(sys.maxsize)
             iterator = csv.reader((x.replace('\0', '') for x in resp.iter_lines()), delimiter=',',
                                   quotechar='"')
 

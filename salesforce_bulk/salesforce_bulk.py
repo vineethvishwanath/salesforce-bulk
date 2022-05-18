@@ -468,8 +468,9 @@ class SalesforceBulk(object):
         if not parse_csv:
             iterator = resp.iter_lines()
         else:
+            csv.field_size_limit(100000000)
             iterator = csv.reader((x.replace('\0', '') for x in resp.iter_lines()), delimiter=',',
-                                  quotechar= csv.QUOTE_NONE)
+                                  quoting=csv.QUOTE_NONE)
 
         BATCH_SIZE = 5000
         for i, line in enumerate(iterator):
@@ -536,7 +537,8 @@ class SalesforceBulk(object):
         records = []
         line_number = 0
         col_names = []
-        reader = csv.reader(tf, delimiter=",", quotechar= csv.QUOTE_NONE)
+        csv.field_size_limit(100000000)
+        reader = csv.reader(tf, delimiter=",", quoting=csv.QUOTE_NONE)
         for row in reader:
             line_number += 1
             records.append(UploadResult(*row))
@@ -556,7 +558,8 @@ class SalesforceBulk(object):
         records = []
         line_number = 0
         col_names = []
-        reader = csv.reader(tf, delimiter=",", quotechar= csv.QUOTE_NONE)
+        csv.field_size_limit(100000000)
+        reader = csv.reader(tf, delimiter=",", quoting=csv.QUOTE_NONE)
         for row in reader:
             line_number += 1
             records.append(row)

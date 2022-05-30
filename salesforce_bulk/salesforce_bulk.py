@@ -14,6 +14,7 @@ import StringIO
 import re
 import time
 import csv
+csv.field_size_limit(1000000)
 from . import bulk_states
 
 UploadResult = namedtuple('UploadResult', 'id success created error')
@@ -433,7 +434,6 @@ class SalesforceBulk(object):
         """
         Gets result ids and generates each result set from the batch and returns it
         as an generator fetching the next result set when needed
-
         Args:
             batch_id: id of batch
             job_id: id of job, if not provided, it will be looked up
@@ -468,9 +468,8 @@ class SalesforceBulk(object):
         if not parse_csv:
             iterator = resp.iter_lines()
         else:
-            csv.field_size_limit(100000000)
             iterator = csv.reader((x.replace('\0', '') for x in resp.iter_lines()), delimiter=',',
-                                  quoting=csv.QUOTE_NONE)
+                                  quotechar='"')
 
         BATCH_SIZE = 5000
         for i, line in enumerate(iterator):
@@ -537,8 +536,7 @@ class SalesforceBulk(object):
         records = []
         line_number = 0
         col_names = []
-        csv.field_size_limit(100000000)
-        reader = csv.reader(tf, delimiter=",", quoting=csv.QUOTE_NONE)
+        reader = csv.reader(tf, delimiter=",", quotechar='"')
         for row in reader:
             line_number += 1
             records.append(UploadResult(*row))
@@ -558,8 +556,7 @@ class SalesforceBulk(object):
         records = []
         line_number = 0
         col_names = []
-        csv.field_size_limit(100000000)
-        reader = csv.reader(tf, delimiter=",", quoting=csv.QUOTE_NONE)
+        reader = csv.reader(tf, delimiter=",", quotechar='"')
         for row in reader:
             line_number += 1
             records.append(row)

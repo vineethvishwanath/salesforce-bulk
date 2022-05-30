@@ -434,7 +434,7 @@ class SalesforceBulk(object):
         """
         Gets result ids and generates each result set from the batch and returns it
         as an generator fetching the next result set when needed
-        
+
         Args:
             batch_id: id of batch
             job_id: id of job, if not provided, it will be looked up

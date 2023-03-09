@@ -313,7 +313,7 @@ class SalesforceBulk(object):
                 batch_id,
                 result_id,
                 job_id=job_id)
-    def get_batch_results(self, batch_id, result_id, job_id=None, chunk_size=None):
+    def get_batch_results(self, batch_id, result_id, job_id=None, parse_csv=False, chunk_size=None):
         job_id = job_id or self.lookup_job_id(batch_id)
         uri = urlparse.urljoin(
             self.endpoint + "/",
@@ -322,5 +322,18 @@ class SalesforceBulk(object):
         )
         resp = requests.get(uri, headers=self.headers(), stream=True)
         self.check_status(resp)
-        return resp.iter_lines(chunk_size=chunk_size)
+
+        if not parse_csv:
+            iterator = resp.iter_lines()
+        else:
+            iterator = csv.reader(resp.iter_lines(), delimiter=',',
+                                  quotechar='"')
+
+        BATCH_SIZE = 5000
+        for i, line in enumerate(iterator):
+            if i % BATCH_SIZE == 0:
+                logger('Loading bulk result #{0}'.format(i))
+            yield line
+
+
 

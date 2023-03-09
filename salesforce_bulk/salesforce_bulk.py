@@ -200,7 +200,7 @@ class SalesforceBulk(object):
         uri = self.endpoint + "/job/%s/batch" % job_id
         resp = requests.post(uri, data=soql, headers=headers)
         self.check_status(resp)
-        tree = ET.fromstring(self.text)
+        tree = ET.fromstring(resp.text)
         batch_id = tree.findtext("{%s}id" % self.jobNS)
         self.batches[batch_id] = job_id
         return batch_id

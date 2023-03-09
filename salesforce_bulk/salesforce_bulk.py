@@ -313,8 +313,9 @@ class SalesforceBulk(object):
                 batch_id,
                 result_id,
                 job_id=job_id)
-    def get_batch_results(self, batch_id, result_id, job_id=None, parse_csv=False, chunk_size=None):
+    def get_batch_results(self, batch_id, result_id, job_id=None, parse_csv=False, chunk_size=None, logger=None):
         job_id = job_id or self.lookup_job_id(batch_id)
+        logger = logger or (lambda message: None)
         uri = urlparse.urljoin(
             self.endpoint + "/",
             "job/{0}/batch/{1}/result/{2}".format(

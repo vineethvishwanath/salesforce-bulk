@@ -127,9 +127,9 @@ class SalesforceBulk(object):
         self.job_content_types[job_id] = contentType
         return job_id
     def check_status(self, resp):
-        if resp.status >= 400:
+        if resp.status_code >= 400:
             msg = "Bulk API HTTP Error result: {0}".format(resp.text)
-            self.raise_error(msg, resp.status)
+            self.raise_error(msg, resp.status_code)
     def close_job(self, job_id):
         doc = self.create_close_job_doc()
         url = self.endpoint + "/job/%s" % job_id

@@ -43,9 +43,9 @@ class BulkBatchFailed(BulkApiError):
         super(BulkBatchFailed, self).__init__(message)
 
 job_to_http_content_type = {
-    'CSV', 'text/csv',
-    'XML', 'application/xml',
-    'JSON', 'application/json',
+    'CSV': 'text/csv',
+    'XML': 'application/xml',
+    'JSON': 'application/json',
 }
 
 class SalesforceBulk(object):
